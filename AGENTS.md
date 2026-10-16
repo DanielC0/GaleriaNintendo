@@ -17,7 +17,7 @@ El objetivo es crear una experiencia web rápida, intuitiva y visualmente cuidad
 - **Persistencia inicial:** `localStorage` para guardar la lista personal y las preferencias del usuario.
 - **Enrutamiento:** React Router si la navegación necesita rutas independientes; no introducirlo si una solución más sencilla cubre el alcance inicial.
 - **Iconos:** una biblioteca coherente como Lucide React. No usar emojis como sustitutos de iconos de interfaz.
-- **Pruebas:** Vitest y React Testing Library cuando se configure el entorno de pruebas.
+- **Pruebas:** Vitest 5 + React Testing Library + jsdom, ya configuradas (`npm run test`, `npm run test:watch`). Los archivos `*.test.ts(x)` viven junto al código que prueban.
 - **Gestor de paquetes:** respetar el que ya use el repositorio (`npm`, `pnpm`, `yarn` o `bun`). Si el proyecto está vacío, utilizar npm por defecto.
 
 No incorporar backend, base de datos, autenticación, servicios de pago ni infraestructura externa en la primera versión. La aplicación debe funcionar como frontend independiente. Si una futura funcionalidad necesita un servicio externo, explicar primero la dependencia y diseñar una integración opcional.
@@ -391,6 +391,8 @@ Esta estructura es una guía, no una obligación de crear todos los archivos des
 - **Lint:** ESLint 10 con flat config, `typescript-eslint` y `eslint-plugin-react-hooks` (reglas de React Compiler incluidas en `recommended-latest`).
 - **Búsqueda:** `normalizeSearchText` (`src/lib/normalizeSearch.ts`) pasa a minúsculas, recorta y colapsa espacios y elimina diacríticos; `useGameSearch` filtra el catálogo por `title` y `series` sin recargar la página.
 - **Mis juegos:** `useMyGames` (`src/hooks/useMyGames.ts`) es la única fuente de verdad de la colección y vive en `App`. Los IDs estables se guardan en `localStorage` con la clave `galeria-nintendo:my-games:v1` a través de `src/lib/storage.ts`, que valida el JSON, deduplica entradas y degrada a modo solo sesión si el almacenamiento no está disponible. Los cambios de otras pestañas se aplican con el evento `storage`.
+- **Filtros y orden:** `applyGameFilters` y `sortGames` (`src/lib/filterGames.ts`) se aplican después de la búsqueda. El orden por título usa `Intl.Collator('es')` y el por año deja los títulos sin `releaseYear` al final. La interfaz vive en `GameFilters` con selects nativos etiquetados y un botón «Limpiar filtros»; la búsqueda y los filtros se limpian juntos cuando no hay coincidencias.
+- **Pruebas:** la configuración está en `vitest.config.ts` (entorno jsdom, `pool: 'vmThreads'`) con el setup en `src/test/setup.ts`. Hay pruebas de las utilidades (`normalizeSearch`, `storage`, `filterGames`), de los hooks (`useGameSearch`, `useMyGames`), de las páginas (`GalleryPage`, `MyGamesPage`) y de un flujo de integración en `App` que valida guardado, navegación y persistencia tras recargar el árbol.
 
 ---
 
