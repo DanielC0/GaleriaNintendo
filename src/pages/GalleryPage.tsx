@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Gamepad2, SearchX } from 'lucide-react';
 import { games } from '../data/games';
 import { useGameSearch } from '../hooks/useGameSearch';
@@ -13,6 +14,22 @@ interface GalleryPageProps {
 
 export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: GalleryPageProps) {
   const { query, setQuery, results, isSearching } = useGameSearch(games);
+  const [collectionStatus, setCollectionStatus] = useState('');
+
+  const handleToggleCollection = (gameId: string) => {
+    const game = games.find((item) => item.id === gameId);
+    const wasSaved = isGameSaved(gameId);
+
+    onToggleCollection(gameId);
+
+    if (game) {
+      setCollectionStatus(
+        wasSaved
+          ? `«${game.title}» se quitó de Mis juegos.`
+          : `«${game.title}» se guardó en Mis juegos.`,
+      );
+    }
+  };
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
@@ -37,6 +54,9 @@ export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: 
               ? `${results.length} ${results.length === 1 ? 'resultado' : 'resultados'} para «${query.trim()}»`
               : `${games.length} títulos disponibles`}
           </p>
+          <p className="sr-only" role="status">
+            {collectionStatus}
+          </p>
 
           <div className="mt-6">
             {results.length > 0 ? (
@@ -44,7 +64,7 @@ export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: 
                 games={results}
                 isGameSaved={isGameSaved}
                 onOpenDetails={onOpenDetails}
-                onToggleCollection={onToggleCollection}
+                onToggleCollection={handleToggleCollection}
               />
             ) : (
               <EmptyState

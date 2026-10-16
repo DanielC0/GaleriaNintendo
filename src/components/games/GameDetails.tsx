@@ -91,10 +91,11 @@ export function GameDetails({ game, isSaved, onToggleCollection, onClose }: Game
         role="dialog"
         aria-modal="true"
         aria-labelledby="game-details-title"
+        aria-describedby="game-details-description"
         tabIndex={-1}
-        className="panel-in relative w-full max-w-2xl rounded-t-xl border border-line bg-surface shadow-2xl sm:rounded-xl"
+        className="panel-in relative max-h-[92dvh] w-full max-w-2xl overflow-y-auto rounded-t-xl border border-line bg-surface shadow-2xl sm:rounded-xl"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
+        <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-line bg-surface px-5 py-4 sm:px-6">
           <div className="min-w-0">
             {game.series ? (
               <p className="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-accent-dark">
@@ -118,7 +119,10 @@ export function GameDetails({ game, isSaved, onToggleCollection, onClose }: Game
 
         <div className="flex flex-col gap-5 px-5 py-5 sm:flex-row sm:px-6">
           <div className="w-full shrink-0 sm:w-44">
-            <div className="aspect-[3/4] overflow-hidden rounded-lg border border-line bg-canvas">
+            <div
+              aria-hidden="true"
+              className="aspect-[3/4] overflow-hidden rounded-lg border border-line bg-canvas"
+            >
               <GameCover game={game} />
             </div>
           </div>
@@ -132,7 +136,9 @@ export function GameDetails({ game, isSaved, onToggleCollection, onClose }: Game
               ))}
             </ul>
 
-            <p className="mt-4 text-sm leading-relaxed text-ink/90">{game.description}</p>
+            <p id="game-details-description" className="mt-4 text-sm leading-relaxed text-ink/90">
+              {game.description}
+            </p>
 
             <dl className="mt-5 space-y-1.5 text-sm">
               {game.releaseYear != null ? (

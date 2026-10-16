@@ -88,7 +88,10 @@ export function MyGamesPage({
               className="flex flex-col gap-4 rounded-lg border border-line bg-surface p-3.5 sm:flex-row sm:items-center"
             >
               <div className="flex min-w-0 flex-1 items-center gap-4">
-                <div className="aspect-[3/4] w-16 shrink-0 overflow-hidden rounded-md border border-line bg-canvas">
+                <div
+                  aria-hidden="true"
+                  className="aspect-[3/4] w-16 shrink-0 overflow-hidden rounded-md border border-line bg-canvas"
+                >
                   <GameCover game={game} />
                 </div>
                 <div className="min-w-0">

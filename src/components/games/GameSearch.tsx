@@ -47,14 +47,14 @@ export function GameSearch({ value, onChange }: GameSearchProps) {
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full rounded-md border border-line bg-surface py-3 pl-11 pr-12 text-sm text-ink shadow-sm placeholder:text-ink-muted/70 transition focus:border-accent focus:outline-2 focus:outline-accent/40"
+          className="w-full rounded-md border border-line bg-surface py-3 pl-11 pr-12 text-sm text-ink shadow-sm placeholder:text-ink-muted transition focus:border-accent focus:outline-2 focus:outline-accent"
         />
         {value !== '' ? (
           <button
             type="button"
             onClick={handleClear}
             aria-label="Borrar búsqueda"
-            className="absolute right-2.5 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-md text-ink-muted transition hover:bg-accent-tint hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-accent"
+            className="absolute right-2.5 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-md text-ink-muted transition hover:bg-accent-tint hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-accent"
           >
             <X size={16} aria-hidden="true" />
           </button>

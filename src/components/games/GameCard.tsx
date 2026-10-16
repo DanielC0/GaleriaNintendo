@@ -21,10 +21,13 @@ export function GameCard({ game, isSaved, onOpenDetails, onToggleCollection }: G
       <button
         type="button"
         onClick={() => onOpenDetails(game.id)}
-        aria-label={`Ver ficha de ${game.title}`}
         className="block w-full text-left focus-visible:outline-2 focus-visible:outline-accent focus-visible:-outline-offset-2"
       >
-        <div className="aspect-[3/4] overflow-hidden border-b border-line bg-canvas">
+        <span className="sr-only">Ver ficha de </span>
+        <div
+          aria-hidden="true"
+          className="aspect-[3/4] overflow-hidden border-b border-line bg-canvas"
+        >
           <GameCover
             game={game}
             className="transition duration-300 group-hover:scale-[1.03]"
@@ -36,7 +39,7 @@ export function GameCard({ game, isSaved, onOpenDetails, onToggleCollection }: G
               {game.series}
             </span>
           ) : null}
-          <h3 className="text-[15px] font-bold leading-snug">{game.title}</h3>
+          <h2 className="text-[15px] font-bold leading-snug">{game.title}</h2>
           <div className="flex flex-wrap items-center gap-1.5">
             {game.platforms.map((platform) => (
               <Tag key={platform}>{platform}</Tag>

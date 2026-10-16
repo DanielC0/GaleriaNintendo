@@ -47,14 +47,14 @@ export function CollectionButton({
       aria-label={label}
       className={
         isSaved
-          ? 'grid size-9 place-items-center rounded-md border border-accent/40 bg-accent-tint text-accent-dark shadow-sm transition hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-          : 'grid size-9 place-items-center rounded-md border border-line bg-surface/95 text-ink-muted shadow-sm transition hover:border-ink/30 hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+          ? 'grid size-10 place-items-center rounded-md border border-accent/40 bg-accent-tint text-accent-dark shadow-sm transition hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+          : 'grid size-10 place-items-center rounded-md border border-line bg-surface/95 text-ink-muted shadow-sm transition hover:border-ink/30 hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
       }
     >
       {isSaved ? (
-        <BookmarkCheck size={17} aria-hidden="true" />
+        <BookmarkCheck size={18} aria-hidden="true" />
       ) : (
-        <Bookmark size={17} aria-hidden="true" />
+        <Bookmark size={18} aria-hidden="true" />
       )}
     </button>
   );
