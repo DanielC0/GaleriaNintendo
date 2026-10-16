@@ -1,6 +1,8 @@
-import { Gamepad2 } from 'lucide-react';
+import { Gamepad2, SearchX } from 'lucide-react';
 import { games } from '../data/games';
+import { useGameSearch } from '../hooks/useGameSearch';
 import { GameGrid } from '../components/games/GameGrid';
+import { GameSearch } from '../components/games/GameSearch';
 import { EmptyState } from '../components/ui/EmptyState';
 
 interface GalleryPageProps {
@@ -8,6 +10,8 @@ interface GalleryPageProps {
 }
 
 export function GalleryPage({ onOpenDetails }: GalleryPageProps) {
+  const { query, setQuery, results, isSearching } = useGameSearch(games);
+
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <header className="max-w-2xl">
@@ -21,24 +25,42 @@ export function GalleryPage({ onOpenDetails }: GalleryPageProps) {
           Explora clásicos y lanzamientos recientes. Abre cualquier ficha para conocer su historia,
           sus plataformas y su jugabilidad.
         </p>
-        {games.length > 0 ? (
-          <p className="mt-4 text-sm text-ink-muted">
-            {games.length} {games.length === 1 ? 'título disponible' : 'títulos disponibles'}
-          </p>
-        ) : null}
       </header>
 
-      <div className="mt-8">
-        {games.length > 0 ? (
-          <GameGrid games={games} onOpenDetails={onOpenDetails} />
-        ) : (
+      {games.length > 0 ? (
+        <>
+          <GameSearch value={query} onChange={setQuery} />
+          <p className="mt-4 text-sm text-ink-muted" role="status">
+            {isSearching
+              ? `${results.length} ${results.length === 1 ? 'resultado' : 'resultados'} para «${query.trim()}»`
+              : `${games.length} títulos disponibles`}
+          </p>
+
+          <div className="mt-6">
+            {results.length > 0 ? (
+              <GameGrid games={results} onOpenDetails={onOpenDetails} />
+            ) : (
+              <EmptyState
+                icon={<SearchX size={22} />}
+                title="No hay coincidencias"
+                message={`No encontramos juegos que coincidan con «${query.trim()}». Prueba con otro nombre o revisa la ortografía.`}
+                action={{
+                  label: 'Limpiar búsqueda',
+                  onAction: () => setQuery(''),
+                }}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="mt-8">
           <EmptyState
             icon={<Gamepad2 size={22} />}
             title="La galería está vacía"
             message="Todavía no hay títulos publicados. Vuelve más tarde cuando el catálogo esté disponible."
           />
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

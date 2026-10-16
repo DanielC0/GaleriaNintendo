@@ -389,6 +389,7 @@ Esta estructura es una guía, no una obligación de crear todos los archivos des
 - **Navegación:** el MVP usa estado interno de React (`MainView`) en lugar de React Router; si más adelante se necesitan URLs profundas o el comportamiento del botón Atrás, se incorporará React Router.
 - **Portadas:** el catálogo inicial no usa imágenes externas. `GameCover` renderiza una composición gráfica original basada en el género cuando falta `coverImage` o cuando una URL externa falla (`onError`). Si en el futuro se añaden portadas reales, debe comprobarse su procedencia y disponibilidad.
 - **Lint:** ESLint 10 con flat config, `typescript-eslint` y `eslint-plugin-react-hooks` (reglas de React Compiler incluidas en `recommended-latest`).
+- **Búsqueda:** `normalizeSearchText` (`src/lib/normalizeSearch.ts`) pasa a minúsculas, recorta y colapsa espacios y elimina diacríticos; `useGameSearch` filtra el catálogo por `title` y `series` sin recargar la página.
 
 ---
 
