@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { App } from './App';
 import { MY_GAMES_STORAGE_KEY } from '../lib/storage';
+import { THEME_STORAGE_KEY } from '../lib/theme';
 
 describe('App', () => {
   it('guarda un juego desde la galería y lo conserva al volver a montar la aplicación', async () => {
@@ -41,5 +42,16 @@ describe('App', () => {
     await user.keyboard('{Escape}');
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('permite cambiar al tema oscuro y lo aplica a la raíz del documento', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'Cambiar al tema oscuro' }));
+
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark');
+    expect(screen.getByRole('button', { name: 'Cambiar al tema claro' })).toBeInTheDocument();
   });
 });

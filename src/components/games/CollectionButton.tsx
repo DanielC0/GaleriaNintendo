@@ -26,7 +26,7 @@ export function CollectionButton({
         className={
           isSaved
             ? 'flex w-full items-center justify-center gap-2 rounded-md border border-line bg-canvas px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-accent-tint hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
-            : 'flex w-full items-center justify-center gap-2 rounded-md bg-accent-dark px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+            : 'flex w-full items-center justify-center gap-2 rounded-md bg-accent-strong px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-strong/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
         }
       >
         {isSaved ? (

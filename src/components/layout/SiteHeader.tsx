@@ -1,16 +1,26 @@
 import { Bookmark, Gamepad2, LayoutGrid } from 'lucide-react';
+import type { Theme } from '../../lib/theme';
 import type { MainView } from '../../types/navigation';
+import { ThemeToggle } from './ThemeToggle';
 
 interface SiteHeaderProps {
   activeView: MainView;
   savedCount: number;
+  theme: Theme;
   onNavigate: (view: MainView) => void;
+  onToggleTheme: () => void;
 }
 
 const navItemBase =
   'inline-flex min-h-10 items-center gap-1.5 rounded-md px-2.5 py-2 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:px-3';
 
-export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderProps) {
+export function SiteHeader({
+  activeView,
+  savedCount,
+  theme,
+  onNavigate,
+  onToggleTheme,
+}: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-3 sm:px-6">
@@ -20,7 +30,7 @@ export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderPro
           className="flex items-center gap-2.5 rounded-md text-left transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           aria-label="Ir a la galería"
         >
-          <span className="grid size-9 shrink-0 place-items-center rounded-md bg-accent-dark text-white">
+          <span className="grid size-9 shrink-0 place-items-center rounded-md bg-accent-strong text-white">
             <Gamepad2 size={20} aria-hidden="true" />
           </span>
           <span className="hidden min-w-0 flex-col leading-tight sm:flex">
@@ -40,7 +50,7 @@ export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderPro
             aria-current={activeView === 'gallery' ? 'page' : undefined}
             className={
               activeView === 'gallery'
-                ? `${navItemBase} bg-accent-dark text-white shadow-sm`
+                ? `${navItemBase} bg-accent-strong text-white shadow-sm`
                 : `${navItemBase} text-ink hover:bg-accent-tint`
             }
           >
@@ -53,7 +63,7 @@ export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderPro
             aria-current={activeView === 'my-games' ? 'page' : undefined}
             className={
               activeView === 'my-games'
-                ? `${navItemBase} bg-accent-dark text-white shadow-sm`
+                ? `${navItemBase} bg-accent-strong text-white shadow-sm`
                 : `${navItemBase} text-ink hover:bg-accent-tint`
             }
           >
@@ -64,7 +74,7 @@ export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderPro
                 <span
                   aria-hidden="true"
                   className={`inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular-nums ${
-                    activeView === 'my-games' ? 'bg-white text-accent-dark' : 'bg-accent-dark text-white'
+                    activeView === 'my-games' ? 'bg-white text-accent-strong' : 'bg-accent-strong text-white'
                   }`}
                 >
                   {savedCount}
@@ -73,6 +83,7 @@ export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderPro
               </>
             ) : null}
           </button>
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </nav>
       </div>
     </header>

@@ -26,7 +26,7 @@ export function EmptyState({ title, message, action, icon }: EmptyStateProps) {
         <button
           type="button"
           onClick={action.onAction}
-          className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-accent-dark px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-accent-strong px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-strong/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {action.label}
         </button>

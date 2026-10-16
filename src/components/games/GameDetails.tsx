@@ -83,7 +83,7 @@ export function GameDetails({ game, isSaved, onToggleCollection, onClose }: Game
 
   return (
     <div
-      className="overlay-in fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-ink/60 p-0 sm:items-center sm:p-6"
+      className="overlay-in fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-scrim p-0 sm:items-center sm:p-6"
       onMouseDown={handleBackdropMouseDown}
     >
       <div

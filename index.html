@@ -9,6 +9,19 @@
       content="Galería independiente de videojuegos de Nintendo: explora títulos clásicos y modernos, consulta sus fichas y forma tu colección personal."
     />
     <title>Galería Nintendo — Explora videojuegos clásicos y modernos</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('galeria-nintendo:theme:v1');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || ((stored === null || stored === undefined) && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (error) {
+          /* Si el almacenamiento no está disponible, se usa el tema claro. */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

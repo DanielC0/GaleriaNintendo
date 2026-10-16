@@ -5,6 +5,7 @@ import { GalleryPage } from '../pages/GalleryPage';
 import { MyGamesPage } from '../pages/MyGamesPage';
 import { games } from '../data/games';
 import { useMyGames } from '../hooks/useMyGames';
+import { useTheme } from '../hooks/useTheme';
 import type { MainView } from '../types/navigation';
 
 export function App() {
@@ -19,6 +20,7 @@ export function App() {
     removeGame,
     pruneMissingGames,
   } = useMyGames();
+  const { theme, toggleTheme } = useTheme();
 
   const selectedGame =
     selectedGameId == null
@@ -45,7 +47,13 @@ export function App() {
 
   return (
     <>
-      <MainLayout activeView={view} savedCount={savedCount} onNavigate={handleNavigate}>
+      <MainLayout
+        activeView={view}
+        savedCount={savedCount}
+        theme={theme}
+        onNavigate={handleNavigate}
+        onToggleTheme={toggleTheme}
+      >
         {view === 'gallery' ? (
           <GalleryPage
             isGameSaved={hasGame}
