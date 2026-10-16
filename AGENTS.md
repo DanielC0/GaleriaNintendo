@@ -390,6 +390,7 @@ Esta estructura es una guía, no una obligación de crear todos los archivos des
 - **Portadas:** el catálogo inicial no usa imágenes externas. `GameCover` renderiza una composición gráfica original basada en el género cuando falta `coverImage` o cuando una URL externa falla (`onError`). Si en el futuro se añaden portadas reales, debe comprobarse su procedencia y disponibilidad.
 - **Lint:** ESLint 10 con flat config, `typescript-eslint` y `eslint-plugin-react-hooks` (reglas de React Compiler incluidas en `recommended-latest`).
 - **Búsqueda:** `normalizeSearchText` (`src/lib/normalizeSearch.ts`) pasa a minúsculas, recorta y colapsa espacios y elimina diacríticos; `useGameSearch` filtra el catálogo por `title` y `series` sin recargar la página.
+- **Mis juegos:** `useMyGames` (`src/hooks/useMyGames.ts`) es la única fuente de verdad de la colección y vive en `App`. Los IDs estables se guardan en `localStorage` con la clave `galeria-nintendo:my-games:v1` a través de `src/lib/storage.ts`, que valida el JSON, deduplica entradas y degrada a modo solo sesión si el almacenamiento no está disponible. Los cambios de otras pestañas se aplican con el evento `storage`.
 
 ---
 

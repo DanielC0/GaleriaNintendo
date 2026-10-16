@@ -5,11 +5,12 @@ import { SiteHeader } from './SiteHeader';
 
 interface MainLayoutProps {
   activeView: MainView;
+  savedCount: number;
   onNavigate: (view: MainView) => void;
   children: ReactNode;
 }
 
-export function MainLayout({ activeView, onNavigate, children }: MainLayoutProps) {
+export function MainLayout({ activeView, savedCount, onNavigate, children }: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <a
@@ -18,7 +19,7 @@ export function MainLayout({ activeView, onNavigate, children }: MainLayoutProps
       >
         Saltar al contenido
       </a>
-      <SiteHeader activeView={activeView} onNavigate={onNavigate} />
+      <SiteHeader activeView={activeView} savedCount={savedCount} onNavigate={onNavigate} />
       <main id="contenido" className="flex-1">
         {children}
       </main>

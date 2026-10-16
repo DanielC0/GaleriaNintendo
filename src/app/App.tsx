@@ -4,11 +4,21 @@ import { GameDetails } from '../components/games/GameDetails';
 import { GalleryPage } from '../pages/GalleryPage';
 import { MyGamesPage } from '../pages/MyGamesPage';
 import { games } from '../data/games';
+import { useMyGames } from '../hooks/useMyGames';
 import type { MainView } from '../types/navigation';
 
 export function App() {
   const [view, setView] = useState<MainView>('gallery');
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
+  const {
+    gameIds,
+    savedCount,
+    isPersistent,
+    hasGame,
+    toggleGame,
+    removeGame,
+    pruneMissingGames,
+  } = useMyGames();
 
   const selectedGame =
     selectedGameId == null
@@ -29,16 +39,38 @@ export function App() {
     setSelectedGameId(null);
   };
 
+  const handlePruneMissing = () => {
+    pruneMissingGames(games.map((game) => game.id));
+  };
+
   return (
     <>
-      <MainLayout activeView={view} onNavigate={handleNavigate}>
+      <MainLayout activeView={view} savedCount={savedCount} onNavigate={handleNavigate}>
         {view === 'gallery' ? (
-          <GalleryPage onOpenDetails={handleOpenDetails} />
+          <GalleryPage
+            isGameSaved={hasGame}
+            onOpenDetails={handleOpenDetails}
+            onToggleCollection={toggleGame}
+          />
         ) : (
-          <MyGamesPage onExploreGallery={() => handleNavigate('gallery')} />
+          <MyGamesPage
+            gameIds={gameIds}
+            isPersistent={isPersistent}
+            onOpenDetails={handleOpenDetails}
+            onRemove={removeGame}
+            onPruneMissing={handlePruneMissing}
+            onExploreGallery={() => handleNavigate('gallery')}
+          />
         )}
       </MainLayout>
-      {selectedGame ? <GameDetails game={selectedGame} onClose={handleCloseDetails} /> : null}
+      {selectedGame ? (
+        <GameDetails
+          game={selectedGame}
+          isSaved={hasGame(selectedGame.id)}
+          onToggleCollection={toggleGame}
+          onClose={handleCloseDetails}
+        />
+      ) : null}
     </>
   );
 }

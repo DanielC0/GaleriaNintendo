@@ -6,10 +6,12 @@ import { GameSearch } from '../components/games/GameSearch';
 import { EmptyState } from '../components/ui/EmptyState';
 
 interface GalleryPageProps {
+  isGameSaved: (gameId: string) => boolean;
   onOpenDetails: (gameId: string) => void;
+  onToggleCollection: (gameId: string) => void;
 }
 
-export function GalleryPage({ onOpenDetails }: GalleryPageProps) {
+export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: GalleryPageProps) {
   const { query, setQuery, results, isSearching } = useGameSearch(games);
 
   return (
@@ -19,7 +21,7 @@ export function GalleryPage({ onOpenDetails }: GalleryPageProps) {
           Archivo independiente
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-          Una colección curada de videojuegos de Nintendo
+          Una colección especial de videojuegos de Nintendo
         </h1>
         <p className="mt-3 leading-relaxed text-ink-muted">
           Explora clásicos y lanzamientos recientes. Abre cualquier ficha para conocer su historia,
@@ -38,7 +40,12 @@ export function GalleryPage({ onOpenDetails }: GalleryPageProps) {
 
           <div className="mt-6">
             {results.length > 0 ? (
-              <GameGrid games={results} onOpenDetails={onOpenDetails} />
+              <GameGrid
+                games={results}
+                isGameSaved={isGameSaved}
+                onOpenDetails={onOpenDetails}
+                onToggleCollection={onToggleCollection}
+              />
             ) : (
               <EmptyState
                 icon={<SearchX size={22} />}

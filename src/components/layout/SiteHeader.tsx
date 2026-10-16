@@ -3,13 +3,14 @@ import type { MainView } from '../../types/navigation';
 
 interface SiteHeaderProps {
   activeView: MainView;
+  savedCount: number;
   onNavigate: (view: MainView) => void;
 }
 
 const navItemBase =
   'inline-flex min-h-10 items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
 
-export function SiteHeader({ activeView, onNavigate }: SiteHeaderProps) {
+export function SiteHeader({ activeView, savedCount, onNavigate }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
@@ -58,6 +59,19 @@ export function SiteHeader({ activeView, onNavigate }: SiteHeaderProps) {
           >
             <Bookmark size={16} aria-hidden="true" />
             <span>Mis juegos</span>
+            {savedCount > 0 ? (
+              <>
+                <span
+                  aria-hidden="true"
+                  className={`inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular-nums ${
+                    activeView === 'my-games' ? 'bg-white text-accent-dark' : 'bg-accent-dark text-white'
+                  }`}
+                >
+                  {savedCount}
+                </span>
+                <span className="sr-only">, {savedCount} guardados</span>
+              </>
+            ) : null}
           </button>
         </nav>
       </div>

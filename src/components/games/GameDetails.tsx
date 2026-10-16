@@ -3,17 +3,20 @@ import type { MouseEvent } from 'react';
 import { X } from 'lucide-react';
 import type { Game } from '../../types/game';
 import { Tag } from '../ui/Tag';
+import { CollectionButton } from './CollectionButton';
 import { GameCover } from './GameCover';
 
 interface GameDetailsProps {
   game: Game;
+  isSaved: boolean;
+  onToggleCollection: (gameId: string) => void;
   onClose: () => void;
 }
 
 const focusableSelector =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function GameDetails({ game, onClose }: GameDetailsProps) {
+export function GameDetails({ game, isSaved, onToggleCollection, onClose }: GameDetailsProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
@@ -157,11 +160,24 @@ export function GameDetails({ game, onClose }: GameDetailsProps) {
                 </div>
               ) : null}
             </dl>
+
+            <div className="mt-5 border-t border-line pt-4">
+              <CollectionButton
+                variant="block"
+                gameTitle={game.title}
+                isSaved={isSaved}
+                onToggle={() => onToggleCollection(game.id)}
+              />
+              <p className="mt-2 text-xs text-ink-muted">
+                Mis juegos se guarda únicamente en este navegador; no se sincroniza con otros
+                dispositivos.
+              </p>
+            </div>
           </div>
         </div>
 
         <p className="border-t border-line px-5 py-3 text-xs text-ink-muted sm:px-6">
-          Pulsa Esc o el botón de cerrar para volver a la galería.
+          Pulsa Esc o el botón de cerrar para volver a la vista anterior.
         </p>
       </div>
     </div>

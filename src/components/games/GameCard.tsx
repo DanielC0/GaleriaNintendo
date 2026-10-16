@@ -1,15 +1,23 @@
+import { BookmarkCheck } from 'lucide-react';
 import type { Game } from '../../types/game';
 import { Tag } from '../ui/Tag';
+import { CollectionButton } from './CollectionButton';
 import { GameCover } from './GameCover';
 
 interface GameCardProps {
   game: Game;
+  isSaved: boolean;
   onOpenDetails: (gameId: string) => void;
+  onToggleCollection: (gameId: string) => void;
 }
 
-export function GameCard({ game, onOpenDetails }: GameCardProps) {
+export function GameCard({ game, isSaved, onOpenDetails, onToggleCollection }: GameCardProps) {
   return (
-    <article className="group relative overflow-hidden rounded-lg border border-line bg-surface shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-md">
+    <article
+      className={`group relative overflow-hidden rounded-lg border shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-md ${
+        isSaved ? 'border-accent/45' : 'border-line'
+      }`}
+    >
       <button
         type="button"
         onClick={() => onOpenDetails(game.id)}
@@ -36,9 +44,22 @@ export function GameCard({ game, onOpenDetails }: GameCardProps) {
             {game.releaseYear != null ? (
               <span className="text-xs tabular-nums text-ink-muted">{game.releaseYear}</span>
             ) : null}
+            {isSaved ? (
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent-dark">
+                <BookmarkCheck size={12} aria-hidden="true" />
+                Guardado
+              </span>
+            ) : null}
           </div>
         </div>
       </button>
+      <div className="absolute right-2.5 top-2.5">
+        <CollectionButton
+          gameTitle={game.title}
+          isSaved={isSaved}
+          onToggle={() => onToggleCollection(game.id)}
+        />
+      </div>
     </article>
   );
 }
