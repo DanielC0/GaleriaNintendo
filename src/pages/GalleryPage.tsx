@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Gamepad2, SearchX } from 'lucide-react';
 import { games } from '../data/games';
 import { useGameSearch } from '../hooks/useGameSearch';
+import {
+  applyGameFilters,
+  collectFilterOptions,
+  defaultGameFilters,
+  hasActiveGameFilters,
+} from '../lib/filterGames';
+import type { GameFilterState, GameSort } from '../lib/filterGames';
+import { GameFilters } from '../components/games/GameFilters';
 import { GameGrid } from '../components/games/GameGrid';
 import { GameSearch } from '../components/games/GameSearch';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -14,7 +22,12 @@ interface GalleryPageProps {
 
 export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: GalleryPageProps) {
   const { query, setQuery, results, isSearching } = useGameSearch(games);
+  const [filters, setFilters] = useState<GameFilterState>(defaultGameFilters);
   const [collectionStatus, setCollectionStatus] = useState('');
+
+  const filterOptions = useMemo(() => collectFilterOptions(games), []);
+  const filtersActive = hasActiveGameFilters(filters);
+  const visibleGames = useMemo(() => applyGameFilters(results, filters), [results, filters]);
 
   const handleToggleCollection = (gameId: string) => {
     const game = games.find((item) => item.id === gameId);
@@ -30,6 +43,45 @@ export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: 
       );
     }
   };
+
+  const handlePlatformChange = (platform: string) => {
+    setFilters((current) => ({ ...current, platform }));
+  };
+
+  const handleGenreChange = (genre: string) => {
+    setFilters((current) => ({ ...current, genre }));
+  };
+
+  const handleSortChange = (sort: GameSort) => {
+    setFilters((current) => ({ ...current, sort }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters(defaultGameFilters);
+  };
+
+  const handleClearSearchAndFilters = () => {
+    setQuery('');
+    setFilters(defaultGameFilters);
+  };
+
+  const resultsLabel = isSearching || filtersActive
+    ? `${visibleGames.length} ${visibleGames.length === 1 ? 'resultado' : 'resultados'}${
+        isSearching ? ` para «${query.trim()}»` : ''
+      }${filtersActive ? ' con los filtros actuales' : ''}`
+    : `${games.length} títulos disponibles`;
+
+  const emptyMessage = isSearching && filtersActive
+    ? `No encontramos juegos que coincidan con «${query.trim()}» con los filtros actuales. Prueba otra búsqueda o limpia los filtros.`
+    : isSearching
+      ? `No encontramos juegos que coincidan con «${query.trim()}». Prueba con otro nombre o revisa la ortografía.`
+      : 'No hay títulos que coincidan con la plataforma o el género seleccionados. Cambia los filtros para ver más juegos.';
+
+  const emptyActionLabel = isSearching && filtersActive
+    ? 'Limpiar búsqueda y filtros'
+    : isSearching
+      ? 'Limpiar búsqueda'
+      : 'Limpiar filtros';
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
@@ -49,19 +101,31 @@ export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: 
       {games.length > 0 ? (
         <>
           <GameSearch value={query} onChange={setQuery} />
+
+          <GameFilters
+            platforms={filterOptions.platforms}
+            genres={filterOptions.genres}
+            platform={filters.platform}
+            genre={filters.genre}
+            sort={filters.sort}
+            hasActiveFilters={filtersActive}
+            onPlatformChange={handlePlatformChange}
+            onGenreChange={handleGenreChange}
+            onSortChange={handleSortChange}
+            onClear={handleClearFilters}
+          />
+
           <p className="mt-4 text-sm text-ink-muted" role="status">
-            {isSearching
-              ? `${results.length} ${results.length === 1 ? 'resultado' : 'resultados'} para «${query.trim()}»`
-              : `${games.length} títulos disponibles`}
+            {resultsLabel}
           </p>
           <p className="sr-only" role="status">
             {collectionStatus}
           </p>
 
           <div className="mt-6">
-            {results.length > 0 ? (
+            {visibleGames.length > 0 ? (
               <GameGrid
-                games={results}
+                games={visibleGames}
                 isGameSaved={isGameSaved}
                 onOpenDetails={onOpenDetails}
                 onToggleCollection={handleToggleCollection}
@@ -70,10 +134,10 @@ export function GalleryPage({ isGameSaved, onOpenDetails, onToggleCollection }: 
               <EmptyState
                 icon={<SearchX size={22} />}
                 title="No hay coincidencias"
-                message={`No encontramos juegos que coincidan con «${query.trim()}». Prueba con otro nombre o revisa la ortografía.`}
+                message={emptyMessage}
                 action={{
-                  label: 'Limpiar búsqueda',
-                  onAction: () => setQuery(''),
+                  label: emptyActionLabel,
+                  onAction: handleClearSearchAndFilters,
                 }}
               />
             )}
